@@ -99,21 +99,36 @@ export default function Home() {
   }
 
   const ResultDisplay = ({ result }: ResultDisplayProps) => {
+    // For debugging - log the raw result
+    console.log("Raw prediction result:", result);
+
     return (
       <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-green-500">
         <h2 className="text-xl font-semibold mb-4 text-gray-800">Prediction Results</h2>
 
+        {/* Add this section to show raw response data */}
+        <div className="mb-4 p-3 bg-gray-100 rounded-lg">
+          <h3 className="text-md font-medium mb-2 text-gray-700">Raw Response</h3>
+          <pre className="text-sm overflow-x-auto whitespace-pre-wrap break-words">
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        </div>
+
         <div className="bg-green-50 rounded-lg p-4 mb-4">
           {typeof result.prediction === 'object' ? (
-            <pre className="text-sm overflow-x-auto">
-              {JSON.stringify(result.prediction, null, 2)}
-            </pre>
+            <div>
+              <h3 className="text-md font-medium mb-2 text-gray-700">Prediction Object</h3>
+              <pre className="text-sm overflow-x-auto">
+                {JSON.stringify(result.prediction, null, 2)}
+              </pre>
+            </div>
           ) : (
             <div className="text-center">
+              <h3 className="text-md font-medium mb-2 text-gray-700">Prediction Value</h3>
               <span className="text-2xl font-bold text-green-700">
-                {result.prediction}
+                {result.prediction !== undefined ? result.prediction : "No prediction value"}
               </span>
-              {result.probability && (
+              {result.probability !== undefined && (
                 <div className="mt-2 text-gray-600">
                   Confidence: {(result.probability * 100).toFixed(2)}%
                 </div>
